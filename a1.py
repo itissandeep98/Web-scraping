@@ -20,17 +20,17 @@ def m_time():
 	c_time_H=datetime.now().strftime("%H") #current hour
 	m_time_H='00:00:00'                    #minimum time 
 
-	if c_time_H>='21':
+	if c_time_H>=  '21':
 		m_time_H='18:00:00' 
-	elif c_time_H>='18':
+	elif c_time_H>= '18':
 		m_time_H='15:00:00'
-	elif c_time_H>='15':
+	elif c_time_H>= '15':
 		m_time_H='12:00:00'
-	elif c_time_H>='12':
+	elif c_time_H>= '12':
 		m_time_H='09:00:00'
-	elif c_time_H>='09':
+	elif c_time_H>= '09':
 		m_time_H='06:00:00'
-	elif c_time_H>='06':
+	elif c_time_H>= '06':
 		m_time_H='03:00:00'
 	return m_time_H
 
