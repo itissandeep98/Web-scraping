@@ -1,13 +1,9 @@
-#sandeep kumar singh
-#2018363
-#sec B
-#group 4
+#Contributor : Sandeep kumar singh
 '''
-For getting attributes like temerature,humidity etc, the whole page is first converted into a string using decode function
-then it gets split into strings based upon '},{'
-Then further it gets split into strings based on ',' and then that particular attribute is chosen from list and the value is 
-printed using string slicing operation.
-a specific case arises in this is that if its the first string after the first split then it contains some extra line-
+For getting attributes like temerature,humidity etc, 
+The data from the webage is converted into string using the decode function.
+Then the data is formatted and sliced as per the needs.
+Specific case :-If the first string after the first split then it contains some extra line-
 "{"cod":"200","message":0.0113,"cnt":40,"list":[" , to remove it another split operation is performed based on ':[' .
 '''
 
@@ -15,8 +11,11 @@ import urllib.request
 from datetime import datetime
 
 '''*-----------------------SOME EXTRA FUNCTIONS-----------------------*'''
-#function to return the lowest value of time of which data is available for today
 def m_time():
+"""
+This function is used to return the least time for which you can get weather details
+Return type is string in format 'XX:XX:XX'
+"""
 	c_time_H=datetime.now().strftime("%H") #current hour
 	m_time_H='00:00:00'                    #minimum time 
 
@@ -34,11 +33,14 @@ def m_time():
 		m_time_H='03:00:00'
 	return m_time_H
 
-#function to search for correct part from the list divided into different time frames(and date)
-#as we were restricted not to use loops; so by nesting i-else statements this function became so huge
-#check it at your own risk
-#d is no. of days after today, t is time, l is no. of elements in whole list
 def partoflist(d,t,l):
+"""
+function to search for correct part from the list divided into different time frames(and date)
+as we were restricted not to use loops; so by nesting i-else statements this function became so huge
+check it at your own risk
+d is no. of days after today, t is time, l is no. of elements in whole list
+"""
+
 	if  m_time()=='00:00:00':
 		if d==0:
 			if t=='21:00:00':
@@ -742,9 +744,12 @@ def partoflist(d,t,l):
 
 	return m
 
-#function to return whole data of the date and time specified
-#here n is no. of the day after today
 def data_day(json,d=0,t='00:00:00'): 
+"""
+The function data_day() is used to get the whole of the specific time and data
+d is the number of days after today
+Return type sting
+"""
 	split=json.split('},{')
 	l=len(split)
 	m=partoflist(d,t,l)
@@ -754,8 +759,11 @@ def data_day(json,d=0,t='00:00:00'):
 
 '''*----------------------REQUIRED FUNCTIONS-----------------------*'''
 
-# function to check for valid response 
 def has_error(json,location, API_key):
+"""
+This fucntion checks whether a particular query is correct or not
+Return Type : Boolean
+"""
 	s=json.split('},{')
 	y=len(s)-1
 	s=s[y].split('],')
@@ -768,15 +776,24 @@ def has_error(json,location, API_key):
 	else:
 		return False
 
-# function to get weather response
 def weather_response(location, API_key):
+"""
+This function is used to get the whole json string from the webpage for a particular location
+Return type : String
+
+"""
+
 	json=urllib.request.urlopen('http://api.openweathermap.org/data/2.5/forecast?q=%s&APPID=%s' %(location,API_key)).read()
 	json=json.decode('ASCII')#decode is highly needed because if typecasted some extra characters will get added up which will make the program more complicated 
 	return json
 
 
-# functions to get attributes on nth day
 def get_temperature (json, d=0, t='00:00:00'):
+"""
+This function is used to return the temperature for specified date and time 
+from the json string passed as parameter
+Return type : float
+"""
 	if d==0 and t==m_time():
 		data=data_day(json).split(':[')
 		data1=data[1].split(',')
@@ -787,6 +804,12 @@ def get_temperature (json, d=0, t='00:00:00'):
 	return temp 
 
 def get_humidity(json, d=0,t='00:00:00'):
+"""
+This function is used to return the humidity for specified date and time 
+from the json string passed as parameter
+Return type : float
+"""
+
 	if d==0 and t==m_time():
 		data=data_day(json,d,t).split(':[')
 		data1=data[1].split(',')
@@ -797,6 +820,12 @@ def get_humidity(json, d=0,t='00:00:00'):
 	return hum
 
 def get_pressure(json, d=0,t='00:00:00'):
+"""
+This function is used to return the pressure level for specified date and time 
+from the json string passed as parameter
+Return type : float
+"""
+
 	if d==0 and t==m_time():
 		data=data_day(json,d,t).split(':[')
 		data1=data[1].split(',')
@@ -807,6 +836,12 @@ def get_pressure(json, d=0,t='00:00:00'):
 	return press
 
 def get_wind(json, d=0,t='00:00:00'):
+"""
+This function is used to return the wubd speed for specified date and time 
+from the json string passed as parameter
+Return type : float
+"""
+
 	if d==0 and t==m_time():
 		data=data_day(json,d,t).split(':[',1)
 		data1=data[1].split(',')
@@ -817,6 +852,12 @@ def get_wind(json, d=0,t='00:00:00'):
 	return wind
 
 def get_sealevel(json, d=0,t='00:00:00'):
+"""
+This function is used to return the sea level for specified date and time 
+from the json string passed as parameter
+Return type : float
+"""
+
 	if d==0 and t==m_time():
 		data=data_day(json,d,t).split(':[')
 		data1=data[1].split(',')
